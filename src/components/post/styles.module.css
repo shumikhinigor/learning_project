@@ -1,0 +1,16 @@
+.link {
+    text-decoration: none;
+}
+.like {
+    color: var(--mantine-color-gray-filled);
+    transition: color .2s
+}
+.like:hover {
+    color: var(--mantine-color-gray-filled-hover);
+}
+.like.active {
+    color: var(--mantine-color-red-filled)
+}
+.like.active:hover {
+    color: var(--mantine-color-red-filled-hover)
+}
