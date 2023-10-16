@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Container, Loader, Center, Stack, Pagination } from '@mantine/core';
 
-import { getPosts } from 'api/posts';
-
-import { Post } from 'types/posts';
-
 import { useQuery } from 'hooks/useQuery';
+
+import { getPosts } from 'store/slices/posts';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 
 import { Layout } from 'components/ui';
 import { Sort } from 'components/sort';
@@ -20,27 +19,21 @@ const SORTS = [
 const LIMIT = 6;
 
 export const Posts = () => {
-    const { params, setParams } = useQuery();
+    const { params, updateParams } = useQuery();
+
+    const dispatch = useAppDispatch();
+    const { data, loading } = useAppSelector((store) => store.posts);
 
     const { search = '', page = 1 } = params;
 
-    const [total, setTotal] = useState<number>(0);
+    const total = useMemo(() => Math.ceil(data?.total / LIMIT), [data?.total]);
 
-    const [posts, setPosts] = useState<Post[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
-
-    const handleChangeSort = (value) => setParams('sort', value);
-    const handleChangePage = (value) => setParams('page', value);
-    const handleChangeSearch = (value) => setParams('search', value);
+    const handleChangeSort = (value) => updateParams('sort', value);
+    const handleChangePage = (value) => updateParams('page', value);
+    const handleChangeSearch = (value) => updateParams('search', value);
 
     useEffect(() => {
-        setLoading(true);
-        getPosts({ query: search, page, limit: LIMIT })
-            .then(({ data }) => {
-                setPosts(data.posts);
-                setTotal(Math.ceil(data.total / LIMIT));
-            })
-            .finally(() => setLoading(false));
+        dispatch(getPosts({ query: search, page, limit: LIMIT }));
     }, [search, page]);
 
     return (
@@ -49,13 +42,13 @@ export const Posts = () => {
                 <Search value={search} onSearch={handleChangeSearch} />
                 <Sort data={SORTS} onSort={handleChangeSort} disabled />
 
-                {!posts.length && loading ? (
+                {!data?.posts.length && loading ? (
                     <Center mt={24}>
                         <Loader type={'bars'} />
                     </Center>
-                ) : posts.length ? (
+                ) : data?.posts.length ? (
                     <Stack mt={24}>
-                        <PostsList posts={posts} />
+                        <PostsList posts={data.posts} />
                         <Pagination value={Number(page)} onChange={handleChangePage} total={total} />
                     </Stack>
                 ) : null}

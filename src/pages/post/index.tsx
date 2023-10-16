@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Container, Button, Center, Loader } from '@mantine/core';
 import { IconArrowLeft } from '@tabler/icons-react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 
-import { getPost } from 'api/posts';
-
 import { PATHS } from 'routes';
 
-import { Post as PostType } from 'types/posts';
+import { getPost } from 'store/slices/posts';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 
 import { Post as PostCard } from 'components/post';
 import { Layout } from 'components/ui';
@@ -16,14 +15,11 @@ export const Post = () => {
     const { state } = useLocation();
     const { postID = '' } = useParams();
 
-    const [post, setPost] = useState<PostType>();
-    const [loading, setLoading] = useState<boolean>(false);
+    const dispatch = useAppDispatch();
+    const { data: post, loading } = useAppSelector((store) => store.post);
 
     useEffect(() => {
-        setLoading(true);
-        getPost(postID)
-            .then((data) => setPost(data.data))
-            .finally(() => setLoading(false));
+        dispatch(getPost(postID));
     }, []);
 
     return (

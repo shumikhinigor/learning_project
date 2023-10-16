@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Card, Image, Text, Tooltip, ActionIcon } from '@mantine/core';
 import { generatePath, Link } from 'react-router-dom';
 import { IconHeart } from '@tabler/icons-react';
@@ -6,11 +6,10 @@ import cn from 'classnames';
 
 import { PATHS } from 'routes';
 
-import { addToFavoritePosts, removeFromFavoritePosts } from 'api/posts';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { addToFavoritePosts, removeFromFavoritePosts } from 'store/slices/posts';
 
 import { Post as PostType } from 'types/posts';
-
-import { useUserContext } from 'context/user';
 
 import classes from './styles.module.css';
 
@@ -18,17 +17,16 @@ interface PostProps {
     post: PostType;
 }
 export const Post = ({ post }: PostProps) => {
-    const { user } = useUserContext();
-    const [isFavorite, setIsFavorite] = useState(() => {
-        return post.likes.includes(user._id);
-    });
+    const dispatch = useAppDispatch();
+    const { data: user } = useAppSelector((store) => store.user);
+
+    const isFavorite = useMemo<boolean>(() => {
+        return !!user?._id && post.likes.includes(user._id);
+    }, [user?._id, post.likes]);
 
     const handleClickLike = () => {
-        if (isFavorite) {
-            removeFromFavoritePosts(post._id).then(() => setIsFavorite(false));
-        } else {
-            addToFavoritePosts(post._id).then(() => setIsFavorite(true));
-        }
+        if (isFavorite) dispatch(removeFromFavoritePosts(post._id));
+        else dispatch(addToFavoritePosts(post._id));
     };
 
     return (

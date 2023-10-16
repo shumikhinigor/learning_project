@@ -2,7 +2,7 @@ import { Api } from 'utils/api';
 
 import { Post } from 'types/posts';
 
-interface PostsResponse {
+export interface PostsResponse {
     posts: Post[];
     total: number;
     postLength: number;

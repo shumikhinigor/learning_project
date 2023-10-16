@@ -6,8 +6,8 @@ export const useQuery = () => {
     const params: Params = {};
     searchParams.forEach((value, name) => (params[name] = value));
 
-    const setParams = (name: string, value: string) => {
+    const updateParams = (name: string, value: string) => {
         setSearchParams({ ...params, [name]: value });
     };
-    return { params, setParams };
+    return { params, updateParams };
 };
