@@ -40,7 +40,7 @@ export const addToFavoritePosts = createAppAsyncThunk<Post, string>(
             const state = await getState();
             const response = await addToFavoritePostsRequest(postID);
 
-            const posts = state.posts.data.posts.map((post) => {
+            const posts = state.posts.data?.posts.map((post) => {
                 return post._id === response.data._id ? response.data : post;
             });
             dispatch(setPosts(posts));
@@ -58,7 +58,7 @@ export const removeFromFavoritePosts = createAppAsyncThunk<Post, string>(
             const state = await getState();
             const response = await removeFromFavoritePostsRequest(postID);
 
-            const posts = state.posts.data.posts.map((post) => {
+            const posts = state.posts.data?.posts.map((post) => {
                 return post._id === response.data._id ? response.data : post;
             });
             dispatch(setPosts(posts));

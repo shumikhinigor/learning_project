@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Home } from 'pages/home';
 import { Post } from 'pages/post';
 import { Posts } from 'pages/posts';
 import { Profile } from 'pages/profile';
@@ -9,14 +10,20 @@ import { Favorites } from 'pages/favorites';
 export const PATHS = {
     HOME: '/',
     LOGIN: '/login',
-    PROFILE: 'profile',
-    POST: 'posts/:postID',
-    FAVORITES: 'favorites',
+    POSTS: '/posts',
+    PROFILE: '/profile',
+    POST: '/posts/:postID',
+    FAVORITES: '/favorites',
 };
 
 export const ROUTES = [
     {
         path: PATHS.HOME,
+        element: <Home />,
+        errorElement: <NotFound />,
+    },
+    {
+        path: PATHS.POSTS,
         element: <Posts />,
         errorElement: <NotFound />,
     },
