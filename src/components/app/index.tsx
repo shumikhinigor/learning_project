@@ -9,8 +9,6 @@ import { useAppDispatch, useAppSelector } from 'store/hooks';
 
 import { ROUTES } from 'routes';
 
-import '@mantine/core/styles.css';
-
 export const theme = createTheme({
     /* Put your mantine theme override here */
 } as MantineThemeOverride);

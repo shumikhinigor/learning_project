@@ -7,15 +7,9 @@ import { getPosts } from 'store/slices/posts';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 
 import { Layout } from 'components/ui';
-import { Sort } from 'components/sort';
 import { Search } from 'components/search';
 import { PostsList } from 'components/posts-list';
 
-const SORTS = [
-    { value: 'popular', label: 'Популярные' },
-    { value: 'new', label: 'Новинки' },
-    { value: 'rating', label: 'По рейтингу' },
-];
 const LIMIT = 6;
 
 export const Posts = () => {
@@ -28,7 +22,6 @@ export const Posts = () => {
 
     const total = useMemo(() => Math.ceil(data?.total / LIMIT), [data?.total]);
 
-    const handleChangeSort = (value) => updateParams('sort', value);
     const handleChangePage = (value) => updateParams('page', value);
     const handleChangeSearch = (value) => updateParams('search', value);
 
@@ -40,7 +33,6 @@ export const Posts = () => {
         <Layout>
             <Container py={24} h={'100%'}>
                 <Search value={search} onSearch={handleChangeSearch} />
-                <Sort data={SORTS} onSort={handleChangeSort} disabled />
 
                 {!data?.posts.length && loading ? (
                     <Center mt={24}>

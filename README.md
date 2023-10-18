@@ -1,4 +1,4 @@
-# Project
+# CodeCats
 
 ### Задание 1
 

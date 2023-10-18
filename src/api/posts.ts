@@ -15,6 +15,10 @@ export const getPost = async (postID: string) => {
     return await Api.request<Post>({ method: 'get', url: `/posts/${postID}` });
 };
 
+export const deletePost = async (postID: string) => {
+    return await Api.request<Post>({ method: 'delete', url: `/posts/${postID}` });
+};
+
 export const addToFavoritePosts = async (postID: string) => {
     return await Api.request<Post>({ method: 'put', url: `/posts/likes/${postID}` });
 };

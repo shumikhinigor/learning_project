@@ -1,16 +1,22 @@
 .link {
     text-decoration: none;
 }
-.like {
-    color: var(--mantine-color-gray-filled);
-    transition: color .2s
+
+.card {
+    position: relative;
+    background-color: var(--mantine-color-body);
 }
-.like:hover {
-    color: var(--mantine-color-gray-filled-hover);
+
+.title {
+    display: block;
+    margin-top: var(--mantine-spacing-md);
+    margin-bottom: 5px;
 }
+
 .like.active {
-    color: var(--mantine-color-red-filled)
+    color: var(--mantine-color-red-5)
 }
-.like.active:hover {
-    color: var(--mantine-color-red-filled-hover)
+
+.footer {
+    margin-top: var(--mantine-spacing-md);
 }

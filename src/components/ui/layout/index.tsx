@@ -8,7 +8,8 @@ interface ILayoutProps {
 }
 export const Layout = ({ children }: ILayoutProps) => {
     return (
-        <AppShell header={{ height: 60 }} footer={{ height: 60 }}>
+        // TODO: временно
+        <AppShell header={{ height: 60 }} footer={{ height: 'var(--app-shell-header-offset)' }}>
             <AppShell.Header>
                 <Header />
             </AppShell.Header>

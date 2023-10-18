@@ -15,10 +15,10 @@ export const Header = () => {
                     <Logo color={'var(--mantine-primary-color-filled)'} mr={'auto'} />
                 </Link>
                 <Group>
-                    <Link to={`/${PATHS.FAVORITES}`}>
+                    <Link to={PATHS.FAVORITES}>
                         <IconHeart color={'var(--mantine-primary-color-filled)'} />
                     </Link>
-                    <Link to={`/${PATHS.PROFILE}`}>
+                    <Link to={PATHS.PROFILE}>
                         <IconUserCircle color={'var(--mantine-primary-color-filled)'} />
                     </Link>
                 </Group>

@@ -1,8 +1,8 @@
-import React, { useMemo, useState } from 'react';
-import { Card, Image, Text, Tooltip, ActionIcon } from '@mantine/core';
+import React, { useMemo, MouseEvent } from 'react';
+import { Card, Text, Group, rem, Center, Image, Avatar, ActionIcon } from '@mantine/core';
 import { generatePath, Link } from 'react-router-dom';
 import { IconHeart } from '@tabler/icons-react';
-import cn from 'classnames';
+import classNames from 'classnames';
 
 import { PATHS } from 'routes';
 
@@ -24,41 +24,49 @@ export const Post = ({ post }: PostProps) => {
         return !!user?._id && post.likes.includes(user._id);
     }, [user?._id, post.likes]);
 
-    const handleClickLike = () => {
-        if (isFavorite) dispatch(removeFromFavoritePosts(post._id));
-        else dispatch(addToFavoritePosts(post._id));
+    const handleClickLike = (evt: MouseEvent<HTMLDivElement>) => {
+        evt.preventDefault();
+
+        if (!isFavorite) dispatch(addToFavoritePosts(post._id));
+        else dispatch(removeFromFavoritePosts(post._id));
     };
 
     return (
-        <Card withBorder h={'100%'} shadow={'xs'}>
+        <Card withBorder radius={'md'} className={classes.card}>
             <Card.Section>
-                <Image src={post.image} h={150} fit={'cover'} />
+                <Image src={post.image} height={180} fallbackSrc={'https://placehold.co/600x400?text=404'} />
             </Card.Section>
+            <Link
+                className={classes.link}
+                state={{ location: location.pathname }}
+                to={generatePath(PATHS.POST, { postID: post._id })}
+            >
+                <Text truncate={true} className={classes.title} color={'var(--mantine-color-text)'} fw={500}>
+                    {post.title}
+                </Text>
+            </Link>
 
-            <Tooltip label={post.title} withArrow>
-                <Link
-                    className={classes.link}
-                    state={{ location: location.pathname }}
-                    to={generatePath(PATHS.POST, { postID: post._id })}
-                >
-                    <Text mt={8} truncate={true} c={'var(--mantine-color-text)'}>
-                        {post.title}
-                    </Text>
-                </Link>
-            </Tooltip>
-            <Text c={'dimmed'} lineClamp={3} size={'sm'} mt={4} mb={12}>
+            <Text fz={'sm'} c={'dimmed'} lineClamp={3} mb={24}>
                 {post.text}
             </Text>
-            <ActionIcon
-                size={32}
-                ml={'auto'}
-                mt={'auto'}
-                variant={'default'}
-                onClick={handleClickLike}
-                className={cn(classes.like, isFavorite && classes.active)}
-            >
-                <IconHeart stroke={1.5} />
-            </ActionIcon>
+
+            <Group justify={'space-between'} className={classes.footer} mt={'auto'} gap={8}>
+                <Center maw={'calc(100% - 36px)'}>
+                    <Avatar src={post.author.avatar} size={32} radius={'xl'} mr={'xs'} />
+                    <Text fz={'sm'} inline truncate={true}>
+                        {post.author.name}
+                    </Text>
+                </Center>
+
+                <Group gap={8} mr={0}>
+                    <ActionIcon variant={'default'} onClick={handleClickLike}>
+                        <IconHeart
+                            style={{ width: rem(16), height: rem(16) }}
+                            className={classNames(classes.like, isFavorite && classes.active)}
+                        />
+                    </ActionIcon>
+                </Group>
+            </Group>
         </Card>
     );
 };

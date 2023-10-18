@@ -3,13 +3,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { userReducer } from 'store/slices/users';
 import { postReducer, postsReducer } from 'store/slices/posts';
 
-interface ConfigureStore {
-    user: ReturnType<typeof userReducer>;
-    post: ReturnType<typeof postReducer>;
-    posts: ReturnType<typeof postsReducer>;
-}
-
-export const store = configureStore<ConfigureStore>({
+export const store = configureStore({
     reducer: {
         user: userReducer,
         post: postReducer,

@@ -7,8 +7,9 @@ import type { AppDispatch, RootState } from 'store';
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-export const createAppAsyncThunk = createAsyncThunk.withTypes<{
+interface ThunkApiConfig {
     state: RootState;
     dispatch: AppDispatch;
     getState: () => RootState;
-}>();
+}
+export const createAppAsyncThunk = createAsyncThunk.withTypes<ThunkApiConfig>();
