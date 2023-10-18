@@ -2,8 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { SerializedError } from '@reduxjs/toolkit';
 
 import { getPost as getPostRequest } from 'api/posts';
+
 import { Post } from 'types/posts';
+
+import { POST_API_KEY } from 'store/keys';
 import { createAppAsyncThunk } from 'store/hooks';
+
 import { isActionFulfilled, isActionPending, isActionRejected } from 'utils/redux';
 
 interface PostState {
@@ -13,8 +17,6 @@ interface PostState {
 }
 
 const initialState: PostState = { data: null, loading: false, error: null };
-
-const POST_API_KEY = '/posts/:id';
 
 export const getPost = createAppAsyncThunk<Post, string>(
     POST_API_KEY,

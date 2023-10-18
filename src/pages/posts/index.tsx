@@ -6,7 +6,7 @@ import { useQuery } from 'hooks/useQuery';
 import { getPosts } from 'store/slices/posts';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 
-import { Layout } from 'components/ui';
+import { Stub, Layout } from 'components/ui';
 import { Search } from 'components/search';
 import { PostsList } from 'components/posts-list';
 
@@ -43,7 +43,9 @@ export const Posts = () => {
                         <PostsList posts={data.posts} />
                         <Pagination value={Number(page)} onChange={handleChangePage} total={total} />
                     </Stack>
-                ) : null}
+                ) : (
+                    <Stub text={search ? 'Ничего не найдено' : 'Постов нет :('} mt={24} />
+                )}
             </Container>
         </Layout>
     );

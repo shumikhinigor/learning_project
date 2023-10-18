@@ -5,6 +5,14 @@ interface PostAuthor {
     about: string;
     avatar: string;
 }
+export interface PostComment {
+    _id: string;
+    post: string;
+    text: string;
+    author: PostAuthor;
+    created_at: string;
+    updated_at: string;
+}
 
 type PostTag = 'myVacation' | 'holidays' | 'legendary' | 'peace' | 'kaif';
 
@@ -17,8 +25,8 @@ export interface Post {
 
     tags: PostTag[];
     likes: string[];
-    comments: string[];
     isPublished: boolean;
+    comments: PostComment[];
 
     author: PostAuthor;
 }

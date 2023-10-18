@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction, SerializedError } from '@reduxjs/toolkit';
+import type { SerializedError } from '@reduxjs/toolkit';
 
 import {
     PostsResponse,
@@ -11,6 +11,7 @@ import {
 import { createAppAsyncThunk } from 'store/hooks';
 import { Post } from 'types/posts';
 import { isActionFulfilled, isActionPending, isActionRejected } from 'utils/redux';
+import { POSTS_API_KEY, DELETE_POST_API_KEY, FAVORITE_POST_API_KEY } from 'store/keys';
 
 interface PostsState {
     loading: boolean;
@@ -19,10 +20,6 @@ interface PostsState {
 }
 
 const initialState: PostsState = { data: { posts: [], postLength: 0, total: 0 }, loading: false, error: null };
-
-const POSTS_API_KEY = '/posts';
-const DELETE_POST_API_KEY = `${POSTS_API_KEY}/:id/delete`;
-const FAVORITE_POST_API_KEY = `${POSTS_API_KEY}/:id/likes`;
 
 export const getPosts = createAppAsyncThunk<PostsResponse, Params>(
     POSTS_API_KEY,
@@ -72,12 +69,7 @@ export const removeFromFavoritePosts = createAppAsyncThunk<Post, string>(
 const postsSlice = createSlice<PostsState>({
     name: 'posts',
     initialState,
-    reducers: {
-        setPosts: (state: PostsState, action: PayloadAction<Post[]>) => {
-            if (!state.data) return;
-            state.data.posts = action.payload;
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(getPosts.fulfilled, (state, action) => {
@@ -93,6 +85,7 @@ const postsSlice = createSlice<PostsState>({
                 state.data.postLength = state.data.postLength - 1;
                 state.data.posts = state.data.posts.filter((post) => post._id !== action.payload._id);
             })
+
             .addMatcher(isActionFulfilled(FAVORITE_POST_API_KEY), (state, action) => {
                 state.error = null;
                 state.loading = false;
@@ -100,7 +93,6 @@ const postsSlice = createSlice<PostsState>({
                     return action.payload._id === post._id ? action.payload : post;
                 });
             })
-
             .addMatcher(isActionPending(POSTS_API_KEY), (state) => {
                 state.error = null;
                 state.loading = true;
@@ -112,5 +104,4 @@ const postsSlice = createSlice<PostsState>({
     },
 });
 
-export const { setPosts } = postsSlice.actions;
 export const postsReducer = postsSlice.reducer;

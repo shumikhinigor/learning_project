@@ -1,9 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { SerializedError } from '@reduxjs/toolkit';
 
-import { User } from 'types/users';
 import { getUser as getUserRequest } from 'api/users';
+
+import { User } from 'types/users';
+
+import { USER_API_KEY } from 'store/keys';
 import { createAppAsyncThunk } from 'store/hooks';
+
 import { isActionPending, isActionRejected } from 'utils/redux';
 
 interface UserState {
@@ -14,7 +18,6 @@ interface UserState {
 
 const initialState: UserState = { data: null, loading: false, error: null };
 
-const USER_API_KEY = '/users/me';
 export const getUser = createAppAsyncThunk<User, null>(
     USER_API_KEY,
     async (_, { fulfillWithValue, rejectWithValue }) => {
