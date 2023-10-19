@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Group, Avatar, Text } from '@mantine/core';
 import { IconHeart, IconUserCircle } from '@tabler/icons-react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 import { PATHS } from 'routes';
 
@@ -22,12 +22,12 @@ export const Header = () => {
                     <Logo color={'var(--mantine-primary-color-filled)'} mr={'auto'} />
                 </Link>
                 <Group align={'center'}>
-                    <Link to={PATHS.POSTS} className={classes.link}>
+                    <NavLink to={PATHS.POSTS} className={classes.link}>
                         <Text>Посты</Text>
-                    </Link>
-                    <Link to={PATHS.FAVORITES} className={classes.link}>
+                    </NavLink>
+                    <NavLink to={PATHS.FAVORITES} className={classes.link}>
                         <Text>Избранное</Text>
-                    </Link>
+                    </NavLink>
                     <Link to={PATHS.PROFILE}>
                         <Avatar src={user.avatar} size={'md'} />
                     </Link>
