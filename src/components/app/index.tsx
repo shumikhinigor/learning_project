@@ -1,31 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+import type { MantineThemeOverride } from '@mantine/core';
 import { MantineProvider, createTheme } from '@mantine/core';
 
-import { getUser } from 'api/users';
+import { getUser } from 'store/slices/users';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 
 import { ROUTES } from 'routes';
 
-import { User } from 'types/users';
-
-import '@mantine/core/styles.css';
-import { UserProvider } from 'context/user';
-
 export const theme = createTheme({
     /* Put your mantine theme override here */
-});
+} as MantineThemeOverride);
 
 const router = createBrowserRouter(ROUTES);
 
 export const App = () => {
-    const [user, setUser] = useState<User>();
-    const [loading, setLoading] = useState<boolean>(false);
+    const dispatch = useAppDispatch();
+    const { data: user, loading } = useAppSelector((store) => store.user);
 
     useEffect(() => {
-        setLoading(true);
-        getUser()
-            .then(({ data }) => setUser(data))
-            .finally(() => setLoading(false));
+        dispatch(getUser());
     }, []);
 
     if (!user && loading) return;
@@ -34,9 +29,7 @@ export const App = () => {
 
     return (
         <MantineProvider theme={theme}>
-            <UserProvider user={user}>
-                <RouterProvider router={router} />
-            </UserProvider>
+            <RouterProvider router={router} />
         </MantineProvider>
     );
 };

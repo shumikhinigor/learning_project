@@ -1,4 +1,6 @@
-import axios, { AxiosInstance, CreateAxiosDefaults, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios from 'axios';
+import type { AxiosInstance, CreateAxiosDefaults, AxiosRequestConfig, AxiosResponse } from 'axios';
+
 import { API_TOKEN, API_URL } from 'utils/config';
 
 class ApiInstance {

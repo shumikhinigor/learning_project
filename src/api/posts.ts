@@ -2,7 +2,7 @@ import { Api } from 'utils/api';
 
 import { Post } from 'types/posts';
 
-interface PostsResponse {
+export interface PostsResponse {
     posts: Post[];
     total: number;
     postLength: number;
@@ -13,6 +13,10 @@ export const getPosts = async (params: Params) => {
 
 export const getPost = async (postID: string) => {
     return await Api.request<Post>({ method: 'get', url: `/posts/${postID}` });
+};
+
+export const deletePost = async (postID: string) => {
+    return await Api.request<Post>({ method: 'delete', url: `/posts/${postID}` });
 };
 
 export const addToFavoritePosts = async (postID: string) => {
