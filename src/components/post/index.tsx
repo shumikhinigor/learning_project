@@ -6,10 +6,9 @@ import classNames from 'classnames';
 
 import { PATHS } from 'routes';
 
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { addToFavoritePosts, removeFromFavoritePosts } from 'store/slices/posts';
-
 import { Post as PostType } from 'types/posts';
+
+import { useAddToFavoritePostsMutation, useGetUserQuery, useRemoveFromFavoritePostsMutation } from 'store/api';
 
 import classes from './styles.module.css';
 
@@ -17,8 +16,10 @@ interface PostProps {
     post: PostType;
 }
 export const Post = ({ post }: PostProps) => {
-    const dispatch = useAppDispatch();
-    const { data: user } = useAppSelector((store) => store.user);
+    const { data: user, isFetching } = useGetUserQuery();
+
+    const [addToFavoritePosts, { isFetching: isAddFetching }] = useAddToFavoritePostsMutation();
+    const [removeFromFavoritePosts, { isFetching: isRemoveFetching }] = useRemoveFromFavoritePostsMutation();
 
     const isFavorite = useMemo<boolean>(() => {
         return !!user?._id && post.likes.includes(user._id);
@@ -27,8 +28,8 @@ export const Post = ({ post }: PostProps) => {
     const handleClickLike = (evt: MouseEvent<HTMLDivElement>) => {
         evt.preventDefault();
 
-        if (!isFavorite) dispatch(addToFavoritePosts(post._id));
-        else dispatch(removeFromFavoritePosts(post._id));
+        if (!isFavorite) addToFavoritePosts(post._id);
+        else removeFromFavoritePosts(post._id);
     };
 
     return (
@@ -59,7 +60,11 @@ export const Post = ({ post }: PostProps) => {
                 </Center>
 
                 <Group gap={8} mr={0}>
-                    <ActionIcon variant={'default'} onClick={handleClickLike}>
+                    <ActionIcon
+                        variant={'default'}
+                        onClick={handleClickLike}
+                        disabled={isFetching || isAddFetching || isRemoveFetching}
+                    >
                         <IconHeart
                             style={{ width: rem(16), height: rem(16) }}
                             className={classNames(classes.like, isFavorite && classes.active)}

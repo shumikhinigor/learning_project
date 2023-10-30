@@ -1,9 +1,7 @@
-interface PostAuthor {
-    _id: string;
-    name: string;
+import { User } from 'types/users';
+
+interface PostAuthor extends User {
     group: string;
-    about: string;
-    avatar: string;
 }
 export interface PostComment {
     _id: string;
@@ -29,4 +27,10 @@ export interface Post {
     comments: PostComment[];
 
     author: PostAuthor;
+}
+
+export interface PostsResponse {
+    posts: Post[];
+    total: number;
+    postLength: number;
 }
