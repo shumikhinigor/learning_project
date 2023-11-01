@@ -23,27 +23,25 @@ export const Login = () => {
     return (
         <Layout>
             <Container py={24} h={'100%'} className={classes.login}>
-                <Center>
-                    <Box miw={'400px'}>
-                        <Tabs value={activeTab} className={classes.tabs} onChange={handleChangeActiveTab}>
-                            <Tabs.List className={classes.list}>
-                                <Center>
-                                    <Tabs.Tab className={classes.item} value={'sing-in'}>
-                                        Вход
-                                    </Tabs.Tab>
-                                    <Tabs.Tab className={classes.item} value={'sing-up'}>
-                                        Регистрация
-                                    </Tabs.Tab>
-                                </Center>
-                            </Tabs.List>
-                            <Tabs.Panel value={'sing-in'} mt={24}>
-                                <SignInForm />
-                            </Tabs.Panel>
-                            <Tabs.Panel value={'sing-up'} mt={24}>
-                                <SignUpForm />
-                            </Tabs.Panel>
-                        </Tabs>
-                    </Box>
+                <Center miw={'400px'}>
+                    <Tabs value={activeTab} className={classes.tabs} onChange={handleChangeActiveTab}>
+                        <Tabs.List className={classes.list}>
+                            <Center>
+                                <Tabs.Tab className={classes.item} value={'sing-in'}>
+                                    Вход
+                                </Tabs.Tab>
+                                <Tabs.Tab className={classes.item} value={'sing-up'}>
+                                    Регистрация
+                                </Tabs.Tab>
+                            </Center>
+                        </Tabs.List>
+                        <Tabs.Panel value={'sing-in'} mt={24}>
+                            <SignInForm />
+                        </Tabs.Panel>
+                        <Tabs.Panel value={'sing-up'} mt={24}>
+                            <SignUpForm />
+                        </Tabs.Panel>
+                    </Tabs>
                 </Center>
             </Container>
         </Layout>
