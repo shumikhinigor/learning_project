@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Container, Tabs, Box, Center } from '@mantine/core';
+import { Container, Tabs, Center } from '@mantine/core';
 
 import { Layout } from 'components/ui';
 import { SignInForm, SignUpForm } from 'components/forms';
