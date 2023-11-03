@@ -1,0 +1,8 @@
+.login {}
+.tabs {}
+.tabs .list {
+    justify-content: center;
+}
+.tabs .list .item {
+    min-width: 200px;
+}

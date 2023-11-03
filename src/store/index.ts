@@ -1,15 +1,39 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { persistReducer, persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
-import { userReducer } from 'store/slices/users';
-import { postReducer, postsReducer } from 'store/slices/posts';
+import { authApi, usersApi, postsApi } from 'store/api';
+import { authReducer } from 'store/slices/auth';
+
+const rootReducer = combineReducers({
+    auth: authReducer,
+    [authApi.reducerPath]: authApi.reducer,
+    [usersApi.reducerPath]: usersApi.reducer,
+    [postsApi.reducerPath]: postsApi.reducer,
+});
+
+const persistConfig = {
+    storage,
+    key: 'root',
+    version: 1,
+    blacklist: [authApi.reducerPath, usersApi.reducerPath, postsApi.reducerPath],
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-    reducer: {
-        user: userReducer,
-        post: postReducer,
-        posts: postsReducer,
+    reducer: persistedReducer,
+    // TODO: really need?
+    middleware: (getDefaultMiddleware: typeof getDefaultMiddleware) => {
+        return getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+            },
+        }).concat([authApi.middleware, usersApi.middleware, postsApi.middleware]);
     },
 });
+
+export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

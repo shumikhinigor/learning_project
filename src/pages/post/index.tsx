@@ -1,43 +1,28 @@
-import React, { MouseEvent, useEffect, useMemo } from 'react';
-import { Container, Center, Loader, Group, Avatar, Text, Title, Stack, Image, Box, HoverCard } from '@mantine/core';
+import React, { useMemo } from 'react';
+import { Container, Center, Loader, Group, Avatar, Text, Title, Stack, Image, Box } from '@mantine/core';
 import { IconHeart, IconMessageCircle } from '@tabler/icons-react';
 import { useParams } from 'react-router-dom';
 
-import { addToFavoritePosts, getPost, removeFromFavoritePosts } from 'store/slices/posts';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-
 import { Layout } from 'components/ui';
 import { Comment } from 'components/comment';
+import { useGetPostQuery, useGetUserQuery } from 'store/api';
+import { withProtect } from 'hocs/withProtect';
 
-export const Post = () => {
+export const Post = withProtect(() => {
     const { postID = '' } = useParams();
 
-    const dispatch = useAppDispatch();
-    const { data: user } = useAppSelector((store) => store.user);
-    const { data: post, loading } = useAppSelector((store) => store.post);
+    const { data: user } = useGetUserQuery();
+    const { data: post, isFetching } = useGetPostQuery(postID);
 
     const isFavorite = useMemo<boolean>(() => {
         if (!user || !post) return false;
         return post.likes.includes(user._id);
     }, [user?._id, post?.likes]);
 
-    const handleClickLike = (evt: MouseEvent<HTMLDivElement>) => {
-        if (!post) return;
-
-        evt.preventDefault();
-
-        if (!isFavorite) dispatch(addToFavoritePosts(post._id));
-        else dispatch(removeFromFavoritePosts(post._id));
-    };
-
-    useEffect(() => {
-        dispatch(getPost(postID));
-    }, []);
-
     return (
         <Layout>
             <Container py={24} h={'100%'}>
-                {!post && loading ? (
+                {isFetching ? (
                     <Center mt={24}>
                         <Loader type={'bars'} />
                     </Center>
@@ -55,7 +40,6 @@ export const Post = () => {
                             <Group
                                 gap={4}
                                 align={'center'}
-                                onClick={handleClickLike}
                                 c={isFavorite ? 'var(--mantine-color-red-7)' : 'var(--mantine-color-text)'}
                             >
                                 <IconHeart width={24} height={24} stroke={1.5} />
@@ -98,4 +82,4 @@ export const Post = () => {
             </Container>
         </Layout>
     );
-};
+});

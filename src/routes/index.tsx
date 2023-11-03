@@ -1,8 +1,10 @@
 import React from 'react';
+import type { RouteObject } from 'react-router-dom';
 
 import { Home } from 'pages/home';
 import { Post } from 'pages/post';
 import { Posts } from 'pages/posts';
+import { Login } from 'pages/login';
 import { Profile } from 'pages/profile';
 import { NotFound } from 'pages/not-found';
 import { Favorites } from 'pages/favorites';
@@ -16,7 +18,12 @@ export const PATHS = {
     FAVORITES: '/favorites',
 };
 
-export const ROUTES = [
+export const ROUTES: RouteObject[] = [
+    {
+        path: PATHS.LOGIN,
+        element: <Login />,
+        errorElement: <NotFound />,
+    },
     {
         path: PATHS.HOME,
         element: <Home />,
