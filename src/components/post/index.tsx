@@ -1,4 +1,4 @@
-import React, { useMemo, MouseEvent } from 'react';
+import React, { useMemo, MouseEvent, forwardRef } from 'react';
 import { Card, Text, Group, rem, Center, Image, Avatar, ActionIcon } from '@mantine/core';
 import { generatePath, Link } from 'react-router-dom';
 import { IconHeart } from '@tabler/icons-react';
@@ -15,11 +15,11 @@ import classes from './styles.module.css';
 interface PostProps {
     post: PostType;
 }
-export const Post = ({ post }: PostProps) => {
-    const { data: user, isFetching } = useGetUserQuery();
+export const Post = forwardRef(({ post }: PostProps, ref) => {
+    const { data: user, isLoading } = useGetUserQuery();
 
-    const [addToFavoritePosts, { isFetching: isAddFetching }] = useAddToFavoritePostsMutation();
-    const [removeFromFavoritePosts, { isFetching: isRemoveFetching }] = useRemoveFromFavoritePostsMutation();
+    const [addToFavoritePosts, { isLoading: isAddLoading }] = useAddToFavoritePostsMutation();
+    const [removeFromFavoritePosts, { isLoading: isRemoveLoading }] = useRemoveFromFavoritePostsMutation();
 
     const isFavorite = useMemo<boolean>(() => {
         return !!user?._id && post.likes.includes(user._id);
@@ -33,7 +33,7 @@ export const Post = ({ post }: PostProps) => {
     };
 
     return (
-        <Card withBorder radius={'md'} className={classes.card}>
+        <Card ref={ref} withBorder radius={'md'} className={classes.card}>
             <Card.Section>
                 <Image src={post.image} height={180} fallbackSrc={'https://placehold.co/600x400?text=404'} />
             </Card.Section>
@@ -63,7 +63,7 @@ export const Post = ({ post }: PostProps) => {
                     <ActionIcon
                         variant={'default'}
                         onClick={handleClickLike}
-                        disabled={isFetching || isAddFetching || isRemoveFetching}
+                        disabled={isLoading || isAddLoading || isRemoveLoading}
                     >
                         <IconHeart
                             style={{ width: rem(16), height: rem(16) }}
@@ -74,4 +74,7 @@ export const Post = ({ post }: PostProps) => {
             </Group>
         </Card>
     );
-};
+});
+
+// TODO: really need?
+Post.displayName = 'Post';

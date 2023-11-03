@@ -20,7 +20,7 @@ export const postsApi = createApi({
             providesTags: [{ type: 'Posts', id: 'LIST' }],
         } as Parameters<typeof builder.query>),
         getPost: builder.query<Post, string>({
-            providesTags: [{ type: 'Posts', id: 'ITEM' }],
+            providesTags: (result) => [{ type: 'Posts', id: result.id }],
             query: (postID: string) => ({ url: `/posts/${postID}` }),
         } as Parameters<typeof builder.query>),
         addToFavoritePosts: builder.mutation<Post, string>({

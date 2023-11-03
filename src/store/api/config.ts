@@ -13,4 +13,4 @@ export const customBaseQuery = fetchBaseQuery({
         return headers;
     },
     // TODO: really need?
-} as Parameters<fetchBaseQuery>);
+});

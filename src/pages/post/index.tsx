@@ -12,7 +12,7 @@ export const Post = withProtect(() => {
     const { postID = '' } = useParams();
 
     const { data: user } = useGetUserQuery();
-    const { data: post, isFetching } = useGetPostQuery(postID);
+    const { data: post, isLoading } = useGetPostQuery(postID);
 
     const isFavorite = useMemo<boolean>(() => {
         if (!user || !post) return false;
@@ -22,7 +22,7 @@ export const Post = withProtect(() => {
     return (
         <Layout>
             <Container py={24} h={'100%'}>
-                {isFetching ? (
+                {isLoading ? (
                     <Center mt={24}>
                         <Loader type={'bars'} />
                     </Center>

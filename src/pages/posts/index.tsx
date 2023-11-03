@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { Container, Loader, Center, Stack, Pagination } from '@mantine/core';
+import React from 'react';
+import { Container, Loader, Center, Stack } from '@mantine/core';
 
 import { useQuery } from 'hooks/useQuery';
 
@@ -9,18 +9,13 @@ import { PostsList } from 'components/posts-list';
 import { withProtect } from 'hocs/withProtect';
 import { useGetPostsQuery } from 'store/api';
 
-const LIMIT = 6;
-
 export const Posts = withProtect(() => {
     const { params, updateParams } = useQuery();
 
-    const { search = '', page = 1 } = params;
+    const { search = '', page = 1, limit = 12 } = params;
 
-    const { data, isFetching } = useGetPostsQuery({ query: search, page, limit: LIMIT });
+    const { data, isFetching, isLoading } = useGetPostsQuery({ query: search, page, limit });
 
-    const total = useMemo(() => Math.ceil(data?.total / LIMIT), [data?.total]);
-
-    const handleChangePage = (value) => updateParams('page', value);
     const handleChangeSearch = (value) => updateParams('search', value);
 
     return (
@@ -28,14 +23,18 @@ export const Posts = withProtect(() => {
             <Container py={24} h={'100%'}>
                 <Search value={search} onSearch={handleChangeSearch} />
 
-                {isFetching ? (
+                {isLoading ? (
                     <Center mt={24}>
                         <Loader type={'bars'} />
                     </Center>
                 ) : data?.posts.length ? (
                     <Stack mt={24}>
                         <PostsList posts={data.posts} />
-                        <Pagination value={Number(page)} onChange={handleChangePage} total={total} />
+                        {isFetching && data.posts.length < limit && (
+                            <Center>
+                                <Loader type={'bars'} />
+                            </Center>
+                        )}
                     </Stack>
                 ) : (
                     <Stub text={search ? 'Ничего не найдено' : 'Постов нет :('} mt={24} />
