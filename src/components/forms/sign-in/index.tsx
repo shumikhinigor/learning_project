@@ -27,7 +27,7 @@ export const SignInForm = () => {
         defaultValues: { email: '', password: '' },
     });
 
-    const [signIn, { isFetching }] = useSignInMutation();
+    const [signIn, { isLoading }] = useSignInMutation();
 
     const onSubmit: SubmitHandler<SignInFormData> = async (data: SignInFormData) => {
         const from = location.state?.from;
@@ -78,7 +78,7 @@ export const SignInForm = () => {
                 </Input.Wrapper>
             </Stack>
 
-            <Button mt={24} type={'submit'} w={'100%'} loading={isFetching}>
+            <Button mt={24} type={'submit'} w={'100%'} loading={isLoading}>
                 Войти
             </Button>
         </form>

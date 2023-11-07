@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Container, Loader, Center, Stack } from '@mantine/core';
+import { Container, Loader, Center } from '@mantine/core';
 
 import { Layout, Stub } from 'components/ui';
 import { PostsList } from 'components/posts-list';
@@ -8,7 +8,7 @@ import { withProtect } from 'hocs/withProtect';
 
 export const Favorites = withProtect(() => {
     const { data: user } = useGetUserQuery();
-    const { data: posts, isFetching } = useGetAllPostsQuery();
+    const { data: posts, isLoading } = useGetAllPostsQuery();
 
     const favorites = useMemo(() => {
         if (!user || !posts) return [];
@@ -18,7 +18,7 @@ export const Favorites = withProtect(() => {
     return (
         <Layout>
             <Container py={24} h={'100%'}>
-                {isFetching ? (
+                {isLoading ? (
                     <Center>
                         <Loader type={'bars'} />
                     </Center>

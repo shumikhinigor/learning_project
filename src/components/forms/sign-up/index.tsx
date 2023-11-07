@@ -35,7 +35,7 @@ export const SignUpForm = () => {
         resolver: yupResolver(SignUpFormSchema),
     });
 
-    const [signUp, { isFetching }] = useSignUpMutation();
+    const [signUp, { isLoading }] = useSignUpMutation();
 
     const onSubmit: SubmitHandler<SignUpFormData> = async (data: SignUpFormData) => {
         try {
@@ -83,7 +83,7 @@ export const SignUpForm = () => {
                 </Input.Wrapper>
             </Stack>
 
-            <Button mt={24} type={'submit'} w={'100%'} loading={isFetching}>
+            <Button mt={24} type={'submit'} w={'100%'} loading={isLoading}>
                 Зарегистрироваться
             </Button>
         </form>
