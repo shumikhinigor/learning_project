@@ -66,7 +66,7 @@ export const postsApi = createApi({
                 const { postID, data } = args;
                 return {
                     body: data,
-                    method: 'post',
+                    method: 'POST',
                     url: `/posts/comments/${postID}`,
                 };
             },
@@ -87,7 +87,7 @@ export const postsApi = createApi({
             query: (args: { postID: string; commentID: string }) => {
                 const { postID, commentID } = args;
                 return {
-                    method: 'delete',
+                    method: 'DELETE',
                     url: `/posts/comments/${postID}/${commentID}`,
                 };
             },

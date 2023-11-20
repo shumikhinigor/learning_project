@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Group, Text } from '@mantine/core';
 import { Link, NavLink } from 'react-router-dom';
 
-import { IconLogout } from '@tabler/icons-react';
+import { IconLogout, IconHeart, IconUser, IconLayoutGrid } from '@tabler/icons-react';
 
 import { PATHS } from 'routes';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
@@ -30,14 +30,16 @@ export const Header = () => {
                 {accessToken && (
                     <Group align={'center'}>
                         <NavLink to={PATHS.POSTS} className={classes.link}>
-                            <Text>Посты</Text>
+                            <IconLayoutGrid stroke={1.5} />
                         </NavLink>
                         <NavLink to={PATHS.FAVORITES} className={classes.link}>
-                            <Text>Избранное</Text>
+                            <IconHeart stroke={1.5} />
                         </NavLink>
                         <NavLink to={PATHS.PROFILE} className={classes.link}>
-                            <Text>Профиль</Text>
+                            <IconUser stroke={1.5} />
                         </NavLink>
+
+                        <Text>|</Text>
 
                         <IconLogout stroke={1.5} className={classes.link} onClick={handleLogout} />
                     </Group>

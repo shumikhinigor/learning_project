@@ -1,4 +1,5 @@
 .link {
+    line-height: 0;
     text-decoration: none;
     color: var(--mantine-color-text);
     transition: color .2s;
