@@ -28,7 +28,13 @@ export const Home = () => {
                     </Text>
 
                     <Link to={PATHS.POSTS}>
-                        <Button variant="gradient" size="xl" radius="xl" className={classes.control}>
+                        <Button
+                            size={'xl'}
+                            radius={'xl'}
+                            variant={'gradient'}
+                            className={classes.control}
+                            gradient={{ from: 'red', to: 'pink', deg: 90 }}
+                        >
                             Читать
                         </Button>
                     </Link>

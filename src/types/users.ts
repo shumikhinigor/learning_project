@@ -8,3 +8,5 @@ export interface User {
     email: string;
     avatar: string;
 }
+
+export type ProfileFormData = Pick<User, 'name' | 'about'>;

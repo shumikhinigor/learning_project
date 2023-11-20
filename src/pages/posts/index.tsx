@@ -8,11 +8,14 @@ import { Search } from 'components/search';
 import { PostsList } from 'components/posts-list';
 import { withProtect } from 'hocs/withProtect';
 import { useGetPostsQuery } from 'store/api';
+import { useAppSelector } from 'store/hooks';
 
 export const Posts = withProtect(() => {
     const { params, updateParams } = useQuery();
 
-    const { search = '', page = 1, limit = 12 } = params;
+    const { search = '', page = 1 } = params;
+
+    const limit = useAppSelector((store) => store.posts.limit);
 
     const { data, isFetching, isLoading } = useGetPostsQuery({ query: search, page, limit });
 

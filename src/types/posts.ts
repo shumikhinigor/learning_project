@@ -3,7 +3,7 @@ import { User } from 'types/users';
 interface PostAuthor extends User {
     group: string;
 }
-export interface PostComment {
+export interface Comment {
     _id: string;
     post: string;
     text: string;
@@ -23,14 +23,8 @@ export interface Post {
 
     tags: PostTag[];
     likes: string[];
+    comments: Comment[];
     isPublished: boolean;
-    comments: PostComment[];
 
     author: PostAuthor;
-}
-
-export interface PostsResponse {
-    posts: Post[];
-    total: number;
-    postLength: number;
 }

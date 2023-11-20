@@ -1,17 +1,19 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { SimpleGrid } from '@mantine/core';
 
 import { Post } from 'components/post';
 
 import { Post as PostType } from 'types/posts';
-import { useQuery } from 'hooks/useQuery';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { setLimit } from 'store/slices/posts';
 
 interface IPostsListProps {
     posts: PostType[];
+    isLoadMore?: boolean;
 }
-export const PostsList = ({ posts }: IPostsListProps) => {
-    const { params, updateParams } = useQuery();
-    const { limit = 12 } = params;
+export const PostsList = ({ posts, isLoadMore = true }: IPostsListProps) => {
+    const dispatch = useAppDispatch();
+    const limit = useAppSelector((store) => store.posts.limit);
 
     const observer = useRef<IntersectionObserver>();
 
@@ -20,9 +22,7 @@ export const PostsList = ({ posts }: IPostsListProps) => {
             if (observer.current) observer.current!.disconnect();
             observer.current = new IntersectionObserver((entries) => {
                 const entry = entries[0];
-                if (entry.isIntersecting) {
-                    updateParams('limit', `${Number(limit) + 12}`);
-                }
+                if (entry.isIntersecting) dispatch(setLimit(limit + 12));
             });
             if (node) observer.current!.observe(node);
         },
@@ -32,7 +32,7 @@ export const PostsList = ({ posts }: IPostsListProps) => {
     return (
         <SimpleGrid cols={3}>
             {posts.map((post) => (
-                <Post ref={lastPostRef} key={post._id} post={post} />
+                <Post ref={isLoadMore ? lastPostRef : null} key={post._id} post={post} />
             ))}
         </SimpleGrid>
     );

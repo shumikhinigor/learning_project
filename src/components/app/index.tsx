@@ -9,6 +9,7 @@ import { ROUTES } from 'routes';
 
 export const theme = createTheme({
     /* Put your mantine theme override here */
+    primaryColor: 'pink',
 } as MantineThemeOverride);
 
 const router = createBrowserRouter(ROUTES);
