@@ -1,23 +1,72 @@
-import React, { useMemo } from 'react';
-import { Container, Center, Loader, Group, Avatar, Text, Title, Stack, Image, Box } from '@mantine/core';
+import React, { useEffect, useMemo } from 'react';
+import type { ChangeEvent, MouseEvent } from 'react';
+
+import {
+    Container,
+    Center,
+    Loader,
+    Group,
+    Avatar,
+    Text,
+    Title,
+    Stack,
+    Image,
+    Box,
+    Textarea,
+    Button,
+} from '@mantine/core';
 import { IconHeart, IconMessageCircle } from '@tabler/icons-react';
 import { useParams } from 'react-router-dom';
 
 import { Layout } from 'components/ui';
 import { Comment } from 'components/comment';
-import { useGetPostQuery, useGetUserQuery } from 'store/api';
+import {
+    useAddToFavoritePostsMutation,
+    useCreatePostCommentMutation,
+    useGetPostQuery,
+    useGetUserQuery,
+    useRemoveFromFavoritePostsMutation,
+} from 'store/api';
 import { withProtect } from 'hocs/withProtect';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { setComment } from 'store/slices/post';
 
 export const Post = withProtect(() => {
     const { postID = '' } = useParams();
 
+    const dispatch = useAppDispatch();
+    const comment = useAppSelector((store) => store.post.comment);
+
     const { data: user } = useGetUserQuery();
     const { data: post, isLoading } = useGetPostQuery(postID);
+
+    const [addToFavoritePosts] = useAddToFavoritePostsMutation();
+    const [removeFromFavoritePosts] = useRemoveFromFavoritePostsMutation();
+    const [createPostComment, { isLoading: isCreateCommentLoading }] = useCreatePostCommentMutation();
 
     const isFavorite = useMemo<boolean>(() => {
         if (!user || !post) return false;
         return post.likes.includes(user._id);
     }, [user?._id, post?.likes]);
+
+    const handleClickLike = () => {
+        if (!isFavorite) addToFavoritePosts(post._id);
+        else removeFromFavoritePosts(post._id);
+    };
+
+    const handleCreateComment = (evt: MouseEvent<HTMLButtonElement>) => {
+        evt.preventDefault();
+
+        createPostComment({ postID, data: { text: comment } });
+    };
+
+    const handleChangeComment = (evt: ChangeEvent<HTMLTextAreaElement>) => {
+        dispatch(setComment(evt.target.value));
+    };
+
+    useEffect(() => {
+        return () => dispatch(setComment(''));
+    }, []);
 
     return (
         <Layout>
@@ -40,6 +89,7 @@ export const Post = withProtect(() => {
                             <Group
                                 gap={4}
                                 align={'center'}
+                                onClick={handleClickLike}
                                 c={isFavorite ? 'var(--mantine-color-red-7)' : 'var(--mantine-color-text)'}
                             >
                                 <IconHeart width={24} height={24} stroke={1.5} />
@@ -77,6 +127,20 @@ export const Post = withProtect(() => {
                                 </Stack>
                             </Stack>
                         )}
+                        <Stack mt={24}>
+                            <Textarea
+                                minRows={4}
+                                autosize={true}
+                                value={comment}
+                                label={'Комментарий'}
+                                onChange={handleChangeComment}
+                                disabled={isCreateCommentLoading}
+                                placeholder={'Напишите комментарий'}
+                            />
+                            <Button disabled={!comment} loading={isCreateCommentLoading} onClick={handleCreateComment}>
+                                Создать комментарий
+                            </Button>
+                        </Stack>
                     </Stack>
                 ) : null}
             </Container>

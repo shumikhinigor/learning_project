@@ -2,6 +2,8 @@
     text-decoration: none;
     color: var(--mantine-color-text);
     transition: color .2s;
+
+    cursor: pointer;
 }
 .link:hover,
 .link:global(.active) {

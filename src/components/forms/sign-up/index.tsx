@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, Input, PasswordInput, Stack } from '@mantine/core';
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';

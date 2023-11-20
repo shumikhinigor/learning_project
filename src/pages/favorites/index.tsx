@@ -23,7 +23,7 @@ export const Favorites = withProtect(() => {
                         <Loader type={'bars'} />
                     </Center>
                 ) : favorites.length ? (
-                    <PostsList posts={favorites} />
+                    <PostsList posts={favorites} isLoadMore={false} />
                 ) : (
                     <Stub text={'Постов нет :('} />
                 )}

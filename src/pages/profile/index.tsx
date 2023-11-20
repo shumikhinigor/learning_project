@@ -1,23 +1,32 @@
 import React from 'react';
-import { Container, Button } from '@mantine/core';
+import { Container, Button, Avatar, Center, Loader, Stack } from '@mantine/core';
 
-import { Layout } from 'components/ui';
+import { useGetUserQuery } from 'store/api';
 import { useAppDispatch } from 'store/hooks';
 import { setAccessToken } from 'store/slices/auth';
+
 import { withProtect } from 'hocs/withProtect';
 
-export const Profile = withProtect(() => {
-    const dispatch = useAppDispatch();
+import { Layout } from 'components/ui';
+import { ProfileForm } from 'components/forms';
 
-    const handleLogout = () => {
-        dispatch(setAccessToken(null));
-    };
+export const Profile = withProtect(() => {
+    const { data: user, isLoading } = useGetUserQuery();
 
     return (
         <Layout>
-            <Container py={24}>
-                <Button onClick={handleLogout}>Выйти</Button>
-            </Container>
+            {isLoading ? (
+                <Center mt={24}>
+                    <Loader type={'bars'} />
+                </Center>
+            ) : (
+                <Container py={24}>
+                    <Stack>
+                        <Avatar size={'xl'} src={user.avatar} alt={user.name} />
+                        <ProfileForm user={user} />
+                    </Stack>
+                </Container>
+            )}
         </Layout>
     );
 });
