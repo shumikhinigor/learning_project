@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Center, Avatar, Loader, Stack, Text, Anchor, Button, Input, Group } from '@mantine/core';
+import { Container, Center, Avatar, Loader, Stack, Text, Anchor, Button, Input, Group, Title } from '@mantine/core';
 import { toast } from 'react-toastify';
 
 import { useGetUserQuery, useUpdateUserAvatarMutation } from 'store/api';
@@ -37,6 +37,7 @@ export const Profile = withProtect(() => {
                 </Center>
             ) : (
                 <Container py={24}>
+                    <Title mb={24}>Профиль</Title>
                     <Stack mb={32} align={'flex-start'}>
                         {!isSetAvatar ? (
                             <React.Fragment>

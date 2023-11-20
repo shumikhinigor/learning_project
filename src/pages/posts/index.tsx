@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Loader, Center, Stack } from '@mantine/core';
+import { Container, Loader, Center, Stack, Title } from '@mantine/core';
 
 import { useQuery } from 'hooks/useQuery';
 
@@ -24,6 +24,7 @@ export const Posts = withProtect(() => {
     return (
         <Layout>
             <Container py={24} h={'100%'}>
+                <Title mb={24}>Посты</Title>
                 <Search value={search} onSearch={handleChangeSearch} />
 
                 {isLoading ? (

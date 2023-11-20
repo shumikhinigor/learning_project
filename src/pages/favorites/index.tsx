@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Container, Loader, Center } from '@mantine/core';
+import { Container, Loader, Center, Title } from '@mantine/core';
 
 import { Layout, Stub } from 'components/ui';
 import { PostsList } from 'components/posts-list';
@@ -18,6 +18,7 @@ export const Favorites = withProtect(() => {
     return (
         <Layout>
             <Container py={24} h={'100%'}>
+                <Title mb={24}>Избранные</Title>
                 {isLoading ? (
                     <Center>
                         <Loader type={'bars'} />
